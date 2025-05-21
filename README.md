@@ -1,1 +1,1 @@
-# web-to-sheet-logger
+# "Web-to-Sheet Logger – Chrome Extension to Capture Web Content
