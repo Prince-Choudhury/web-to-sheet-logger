@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .header img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .instructions {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      flex: 1;
+      padding: 8px 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button.secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    button.secondary:hover {
+      background: #e0e0e0;
+    }
+    #status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="../icons/icon48.png" alt="Logo">
+    <h1>Web-to-Sheet Logger</h1>
+  </div>
+  
+  <div class="instructions">
+    Select text on any webpage and click the floating save button or use right-click menu to save to your Google Sheet.
+  </div>
+  
+  <div class="button-container">
+    <button id="saveBtn">Save Selection</button>
+    <button id="viewSheetBtn" class="secondary">View Sheet</button>
+  </div>
+  
+  <div id="status"></div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
