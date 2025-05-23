@@ -1,8 +1,8 @@
 
-// Google Apps Script Web App URL (paste your new Web App URL from step 3)
+// Google Apps Script Web App URL 
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwB_cRdvLZyAjoK3ug8vqwNELyo5o2muRX4N-1hGP4kxFwNgwWiqGWZ7pmxJxmU7Adz/exec";
 
-// Google Sheet URL (paste your Google Sheet URL)
+// Google Sheet URL 
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/1KAfej5fJcLvbXaYsmT7kfQRsAkQQ6pViQbwp8SXdXJI/edit?gid=0#gid=0";
 
 // Create context menu item
