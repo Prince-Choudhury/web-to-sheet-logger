@@ -1,5 +1,5 @@
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize the content script
+(function() {
   // Create floating button element
   const floatingButton = document.createElement('div');
   floatingButton.innerHTML = '💾 Save';

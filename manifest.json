@@ -4,6 +4,7 @@
     "version": "1.0",
     "description": "Save highlighted web text to Google Sheets",
     "permissions": ["activeTab", "scripting", "storage", "contextMenus", "notifications"],
+    "host_permissions": ["<all_urls>", "https://script.google.com/*", "https://docs.google.com/*"],
     "background": {
       "service_worker": "background.js"
     },
@@ -18,7 +19,6 @@
     "content_scripts": [{
       "matches": ["<all_urls>"],
       "js": ["content.js"]
-    }],
-    "host_permissions": ["https://script.google.com/*"]
+    }]
   }
   

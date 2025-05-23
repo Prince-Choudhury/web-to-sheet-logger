@@ -1,9 +1,9 @@
 
-// Google Apps Script Web App URL (replace with your URL from step 3)
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzheawITFslQH6_n6MM26FW1BduCZllLVR66gj1PS0iniw9bPBsGdNeOxcswfSYoKyy/exec";
+// Google Apps Script Web App URL (paste your new Web App URL from step 3)
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwB_cRdvLZyAjoK3ug8vqwNELyo5o2muRX4N-1hGP4kxFwNgwWiqGWZ7pmxJxmU7Adz/exec";
 
-// Google Sheet URL (replace with your spreadsheet URL from step 3)
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/1DwmGPnX5I-mb9ptAiSffm05vu2zaKNMtKUg_Ktag9jM/edit?gid=0#gid=0";
+// Google Sheet URL (paste your Google Sheet URL)
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1KAfej5fJcLvbXaYsmT7kfQRsAkQQ6pViQbwp8SXdXJI/edit?gid=0#gid=0";
 
 // Create context menu item
 chrome.runtime.onInstalled.addListener(() => {
@@ -34,30 +34,66 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       url: request.url,
       title: request.title,
       timestamp: request.timestamp || new Date().toISOString()
+    }).then(() => {
+      sendResponse({ success: true });
+    }).catch(error => {
+      console.error('Error saving to sheet:', error);
+      sendResponse({ success: false, error: error.message });
     });
+    return true; // Will respond asynchronously
   }
 });
 
 // Function to save data to Google Sheet
 async function saveToSheet(data) {
   try {
-    const response = await fetch(WEBHOOK_URL, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" }
-    });
+    console.log('Attempting to save data:', data);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // First try with regular CORS mode
+    try {
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      const responseText = await response.text();
+      console.log('Response:', responseText);
+
+      if (response.ok) {
+        showNotification('Success', 'Text saved to sheet');
+        return true;
+      }
+    } catch (corsError) {
+      console.log('CORS request failed, trying no-cors mode');
     }
 
-    // Show success notification
-    showNotification('Success', 'Content saved to sheet!');
+    // If CORS fails, try with no-cors as fallback
+    const response = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      body: JSON.stringify(data)
+    });
 
+    console.log('No-CORS Response:', response);
+
+    if (response.type === 'opaque') {
+      showNotification('Success', 'Text saved to sheet');
+      return true;
+    }
+
+    throw new Error('Failed to save to sheet');
   } catch (error) {
     console.error("Error saving to sheet:", error);
     // Show error notification
-    showNotification('Error', error.message, true);
+    showNotification('Error', `Failed to save: ${error.message}`);
+    throw error;
   }
 }
 
