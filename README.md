@@ -23,18 +23,56 @@ Web-to-Sheet Logger is a Chrome extension that lets you highlight text on any we
 
 ```javascript
 function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const data = JSON.parse(e.postData.contents);
-  
-  sheet.appendRow([
-    data.timestamp,
-    data.text,
-    data.title,
-    data.url
-  ]);
-  
-  return ContentService.createTextOutput('Success')
-    .setMimeType(ContentService.MimeType.TEXT);
+  try {
+    // Log the incoming request for debugging
+    Logger.log('Received POST request');
+    
+    // Get the active sheet
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Parse the incoming data
+    let data;
+    try {
+      data = JSON.parse(e.postData.contents);
+      Logger.log('Parsed data:', data);
+    } catch (parseError) {
+      Logger.log('Error parsing data:', e.postData.contents);
+      throw new Error('Invalid JSON data');
+    }
+    
+    // Validate required fields
+    if (!data.text || !data.url || !data.title || !data.timestamp) {
+      throw new Error('Missing required fields');
+    }
+    
+    // Add a new row with the data
+    sheet.appendRow([
+      new Date(data.timestamp),
+      data.text,
+      data.title,
+      data.url
+    ]);
+    
+    // Return success response
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      message: 'Data added successfully'
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    // Log the error
+    Logger.log('Error:', error.toString());
+    
+    // Return error response
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput('The web app is working correctly. Use POST to save data.');
 }
 ```
 
