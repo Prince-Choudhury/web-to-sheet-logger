@@ -10,6 +10,12 @@ Web-to-Sheet Logger is a Chrome extension that lets you highlight text on any we
 - 🎨 Clean, modern UI with visual feedback
 - 🔄 View your saved entries directly from the extension
 
+## 📺 Demo Video
+
+[![Watch the Demo](demo_thumbnail.png)](https://drive.google.com/file/d/1x9Lh4vPU-3EEli31OlcGyIVmf1258Qlm/view?usp=drive_link)
+
+Click the image above to watch the demo video hosted on Google Drive.
+
 ## Installation
 1. Clone this repository
 2. Open Chrome and go to `chrome://extensions/`
